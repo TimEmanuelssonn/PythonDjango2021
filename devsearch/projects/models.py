@@ -7,6 +7,10 @@ class Project(models.Model):
     discription = models.TextField(null=True, blank=True)
     demo_link = models.CharField(max_length=2000, null=True, blank=True)
     source_link = models.CharField(max_length=2000, null=True, blank=True)
+    #Adds the tag for a many to many relationship
+    tags = models.ManyToManyField('Tag', blank=True)
+    vote_total = models.IntegerField(default=0, null=True, blank=True)
+    vote_ratio = models.IntegerField(default=0, null=True, blank=True)
     #Make timestamp when created
     created = models.DateTimeField(auto_now_add=True)
     #Unique id with uuid, set to pk and not editable
@@ -15,4 +19,28 @@ class Project(models.Model):
     def __str__(self):
         return self.title
 
+class Review(models.Model):
+    #Create a dropdown menu
+    VOTE_TYPE = (
+        ('up', 'Up Vote'),
+        ('down', 'Down Vote'),
+    )
+    #owner = 
+    #CASCADE will delete the review if project is deleted
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    body = models.TextField(null=True, blank=True)
+    #Adds the dropdown menu to value field
+    value = models.CharField(max_length=200, choices=VOTE_TYPE)
+    created = models.DateTimeField(auto_now_add=True)
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
 
+    def __str__(self):
+        return self.value
+
+class Tag(models.Model):
+    name = models.CharField(max_length=200)
+    created = models.DateTimeField(auto_now_add=True)
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+
+    def __str__(self):
+        return self.name
