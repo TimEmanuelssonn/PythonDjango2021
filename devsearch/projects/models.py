@@ -1,6 +1,8 @@
 from django.db import models
 import uuid
 
+
+
 class Project(models.Model):
     title = models.CharField(max_length=200)
     #null=True means that the text could be empty for database and blank for django
