@@ -16,7 +16,8 @@ def createProject(request):
     form = ProjectForm()
 
     if request.method == 'POST':
-        form = ProjectForm(request.POST)
+        #With request.FILES we can get our image files the user upload
+        form = ProjectForm(request.POST, request.FILES)
         #if everything is valid and correct
         if form.is_valid():
             #save from to database
@@ -34,7 +35,7 @@ def updateProject(request, pk):
     form = ProjectForm(instance=project)
 
     if request.method == 'POST':
-        form = ProjectForm(request.POST, instance=project)
+        form = ProjectForm(request.POST, request.FILES, instance=project)
         #if everything is valid and correct
         if form.is_valid():
             #save from to database
